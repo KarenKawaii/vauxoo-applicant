@@ -36,7 +36,8 @@ SET default_with_oids = false;
 CREATE TABLE employee (
     id integer NOT NULL,
     first_name character varying(20),
-    last_name character varying(20)
+    last_name character varying(20),
+    id_jefe integer
 );
 
 
@@ -82,14 +83,26 @@ CREATE TABLE hobbies (
 ALTER TABLE public.hobbies OWNER TO kaiser;
 
 --
+-- Name: jefe; Type: TABLE; Schema: public; Owner: kaiser; Tablespace: 
+--
+
+CREATE TABLE jefe (
+    id_jefe integer NOT NULL
+)
+INHERITS (employee);
+
+
+ALTER TABLE public.jefe OWNER TO kaiser;
+
+--
 -- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: kaiser
 --
 
-COPY employee (id, first_name, last_name) FROM stdin;
-1	Federico	Hernández García
-2	Mónica	Gutiérrez Méndez
-3	Alejandro	Farías Castillo
-4	Isela	Rodriguez Pérez
+COPY employee (id, first_name, last_name, id_jefe) FROM stdin;
+2	Mónica	Gutiérrez Méndez	1
+1	Federico	Hernández García	4
+3	Alejandro	Farías Castillo	4
+4	Isela	Rodriguez Pérez	2
 \.
 
 
@@ -136,6 +149,18 @@ COPY hobbies (id_employee, id_employeeh) FROM stdin;
 
 
 --
+-- Data for Name: jefe; Type: TABLE DATA; Schema: public; Owner: kaiser
+--
+
+COPY jefe (id, first_name, last_name, id_jefe) FROM stdin;
+5	María Elena	González Perez	1
+6	David	Estrada Méndez	2
+7	Jorge Luis	Gamboa López	3
+8	Karen	Orozco Lozano	4
+\.
+
+
+--
 -- Name: employee_department_pkey; Type: CONSTRAINT; Schema: public; Owner: kaiser; Tablespace: 
 --
 
@@ -168,11 +193,27 @@ ALTER TABLE ONLY hobbies
 
 
 --
+-- Name: jefe_pkey; Type: CONSTRAINT; Schema: public; Owner: kaiser; Tablespace: 
+--
+
+ALTER TABLE ONLY jefe
+    ADD CONSTRAINT jefe_pkey PRIMARY KEY (id_jefe);
+
+
+--
 -- Name: employee_department_id_employee_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kaiser
 --
 
 ALTER TABLE ONLY employee_department
     ADD CONSTRAINT employee_department_id_employee_fkey FOREIGN KEY (id_employee) REFERENCES employee(id);
+
+
+--
+-- Name: employee_id_jefe_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kaiser
+--
+
+ALTER TABLE ONLY employee
+    ADD CONSTRAINT employee_id_jefe_fkey FOREIGN KEY (id_jefe) REFERENCES jefe(id_jefe) ON DELETE CASCADE;
 
 
 --
