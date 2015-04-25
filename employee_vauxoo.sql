@@ -57,6 +57,31 @@ CREATE TABLE employee_department (
 ALTER TABLE public.employee_department OWNER TO kaiser;
 
 --
+-- Name: employee_hobby; Type: TABLE; Schema: public; Owner: kaiser; Tablespace: 
+--
+
+CREATE TABLE employee_hobby (
+    id integer NOT NULL,
+    name character varying(20),
+    description character varying(40)
+);
+
+
+ALTER TABLE public.employee_hobby OWNER TO kaiser;
+
+--
+-- Name: hobbies; Type: TABLE; Schema: public; Owner: kaiser; Tablespace: 
+--
+
+CREATE TABLE hobbies (
+    id_employee integer NOT NULL,
+    id_employeeh integer NOT NULL
+);
+
+
+ALTER TABLE public.hobbies OWNER TO kaiser;
+
+--
 -- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: kaiser
 --
 
@@ -83,11 +108,47 @@ COPY employee_department (id, id_employee, name, description) FROM stdin;
 
 
 --
+-- Data for Name: employee_hobby; Type: TABLE DATA; Schema: public; Owner: kaiser
+--
+
+COPY employee_hobby (id, name, description) FROM stdin;
+1	Bailar	Salsa, merengue o cumbia
+2	Dibujar	Tipo anime, objetos y en 3D
+3	Cantar	Música Pop y baladas
+\.
+
+
+--
+-- Data for Name: hobbies; Type: TABLE DATA; Schema: public; Owner: kaiser
+--
+
+COPY hobbies (id_employee, id_employeeh) FROM stdin;
+1	1
+1	3
+2	1
+2	2
+2	3
+3	1
+3	2
+4	1
+4	3
+\.
+
+
+--
 -- Name: employee_department_pkey; Type: CONSTRAINT; Schema: public; Owner: kaiser; Tablespace: 
 --
 
 ALTER TABLE ONLY employee_department
     ADD CONSTRAINT employee_department_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: employee_hobby_pkey; Type: CONSTRAINT; Schema: public; Owner: kaiser; Tablespace: 
+--
+
+ALTER TABLE ONLY employee_hobby
+    ADD CONSTRAINT employee_hobby_pkey PRIMARY KEY (id);
 
 
 --
@@ -99,11 +160,35 @@ ALTER TABLE ONLY employee
 
 
 --
+-- Name: hobbies_pkey; Type: CONSTRAINT; Schema: public; Owner: kaiser; Tablespace: 
+--
+
+ALTER TABLE ONLY hobbies
+    ADD CONSTRAINT hobbies_pkey PRIMARY KEY (id_employee, id_employeeh);
+
+
+--
 -- Name: employee_department_id_employee_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kaiser
 --
 
 ALTER TABLE ONLY employee_department
     ADD CONSTRAINT employee_department_id_employee_fkey FOREIGN KEY (id_employee) REFERENCES employee(id);
+
+
+--
+-- Name: hobbies_id_employee_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kaiser
+--
+
+ALTER TABLE ONLY hobbies
+    ADD CONSTRAINT hobbies_id_employee_fkey FOREIGN KEY (id_employee) REFERENCES employee(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: hobbies_id_employeeh_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kaiser
+--
+
+ALTER TABLE ONLY hobbies
+    ADD CONSTRAINT hobbies_id_employeeh_fkey FOREIGN KEY (id_employeeh) REFERENCES employee_hobby(id) ON DELETE CASCADE;
 
 
 --
